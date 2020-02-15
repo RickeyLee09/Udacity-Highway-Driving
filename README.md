@@ -17,6 +17,22 @@ Each waypoint in the list contains  [x,y,s,dx,dy] values. x and y are the waypoi
 
 The highway's waypoints loop around so the frenet s value, distance along the road, goes from 0 to 6945.554.
 
+## Model Details
+After read the sensor data from the csv file, the first thing i did was to fuse the data, which is detailed in 
+the `perception` function, which was implemented in the line 44 in the `main.cpp`. 
+In the perception function, basically, I did the following things:
+
+    1. calculate the cost of the lane
+    2. calculate the desired speed.
+    3. determine whether to change a lane or stay in the current lane. If the vehicle was able to make a lane change and both sides were available, the vehicle would 
+    go to the left lane by default. If it was not necessary to change a lane, we would stay in the current lane. 
+    4. pass the speed and action to the main function.
+    
+After that, the spline library was called to generate a path which limit the vehicle, so that the speed, acceleration and jerk
+were not overshot. Based on the vehicle's current position and heading, 2 points can be generated to determine the spline. 
+Or the previous points can be used if if was not successfully calculated. After that, I transformed the spline to the vehicle's coordinate
+and calculated the Euclidine distance. Then, append the spline to 75 points and change back to the world coordinate.
+
 ## Basic Build Instructions
 
 1. Clone this repo.
